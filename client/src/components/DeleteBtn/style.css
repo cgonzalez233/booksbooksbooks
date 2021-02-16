@@ -2,3 +2,17 @@
   float: right;
   color: #e74944;
 }
+
+.bookImage {
+  height: auto;
+  width: 150px;
+}
+
+.text-wrap {
+  word-wrap: break-word;
+}
+
+.save-btn {
+  float: right;
+  color: #e74944;
+}
