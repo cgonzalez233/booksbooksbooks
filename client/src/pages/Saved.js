@@ -4,6 +4,7 @@ import API from "../utils/API";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
+import DeleteBtn from "../components/DeleteBtn";
 
 function Books() {
   // Setting our component's initial state
@@ -30,7 +31,7 @@ function Books() {
 
   return (
     <Container fluid>
-      {console.log(setBooks)}
+      {console.log()}
       <Row>
         <Col size="md-12 sm-12">
           <Jumbotron>
@@ -39,9 +40,32 @@ function Books() {
           <List>
             {books.map((book) => (
               <ListItem key={book.id}>
-                {book.volumeInfo.title}
-
-                <DeleteBtn />
+                <p>
+                  <b>{book.title}</b>
+                  {" by "}
+                  {book.authors ? book.authors.join(", ") : ""}
+                  <DeleteBtn onClick={() => deleteBook(book._id)} />
+                  <br></br>
+                  <a
+                    className="btn btn-primary text-light"
+                    type="button"
+                    data-toggle="collapse"
+                    href={`#${book.id}`}
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="collapseExample"
+                  >
+                    See More
+                  </a>
+                </p>
+                <div className="collapse" id={`${book.id}`}>
+                  <div className="card card-body">
+                    <img src={`${book.image}`} className="bookImage"></img>
+                    <br></br>
+                    {book.description}
+                    <a href={`${book.link}`}>Check out the book!</a>
+                  </div>
+                </div>
               </ListItem>
             ))}
           </List>

@@ -44,6 +44,7 @@ function Detail(props) {
       date: book.volumeInfo.publishedDate,
       image: book.volumeInfo.imageLinks.thumbnail,
       link: book.volumeInfo.infoLink,
+      id: book.id,
     }).then(() => getBooks());
   }
 
