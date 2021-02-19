@@ -30,6 +30,7 @@ function Books() {
 
   return (
     <Container fluid>
+      {console.log(setBooks)}
       <Row>
         <Col size="md-12 sm-12">
           <Jumbotron>
@@ -39,6 +40,7 @@ function Books() {
             {books.map((book) => (
               <ListItem key={book.id}>
                 {book.volumeInfo.title}
+
                 <DeleteBtn />
               </ListItem>
             ))}

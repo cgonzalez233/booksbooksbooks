@@ -22,28 +22,34 @@ function Detail(props) {
   // Then reload books from the database
   function handleFormSubmit(event) {
     event.preventDefault();
+    getBooks();
+  }
+
+  function getBooks() {
     if (formObject.title) {
       API.googleSearch(formObject.title)
-        .then((res) => setBooks(res.data.items))
+        .then((res) =>
+          setBooks(res.data.items.filter((book) => book.volumeInfo.authors))
+        )
         .catch((err) => console.log(err));
     }
   }
-  function loadBooks() {
-    API.getBooks()
-      .then((res) => setBooks(res.data))
-      .catch((err) => console.log(err));
-  }
 
-  function saveBook(id) {
-    API.saveBook(id)
-      .then((res) => loadBooks())
-      .catch((err) => console.log(err));
+  function handleBookSave(id) {
+    const book = books.find((book) => book.id === id);
+    API.saveBook({
+      title: book.volumeInfo.title,
+      authors: book.volumeInfo.authors,
+      description: book.volumeInfo.description,
+      date: book.volumeInfo.publishedDate,
+      image: book.volumeInfo.imageLinks.thumbnail,
+      link: book.volumeInfo.infoLink,
+    }).then(() => getBooks());
   }
-
-  // setBooks(res.data.items))
 
   return (
     <Container fluid>
+      {console.log(books)}
       <Row>
         <Col size="md-3">
           <Link to="/books/saved">← Back to Favorites</Link>
@@ -74,8 +80,10 @@ function Detail(props) {
                   <p>
                     <b>{book.volumeInfo.title}</b>
                     {" by "}
-                    {book.volumeInfo.authors[0]}
-                    <SaveBtn onClick={() => saveBook(book._id)} />
+                    {book.volumeInfo.authors
+                      ? book.volumeInfo.authors.join(", ")
+                      : ""}
+                    <SaveBtn onClick={() => handleBookSave(book.id)} />
                     <br></br>
                     <a
                       className="btn btn-primary text-light"
